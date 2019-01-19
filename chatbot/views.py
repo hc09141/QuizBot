@@ -60,6 +60,7 @@ def post_facebook_message(fbid, message):
 
     wrong_answers = question.wrongoption_set.all()
     for wrong_answer in wrong_answers:
+        print(wrong_answer)
         response_msg["message"]["quick_replies"].append({
             "content_type":"text",
             "title":wrong_answer.text,
