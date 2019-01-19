@@ -47,11 +47,11 @@ def post_facebook_message(fbid, message):
     response_msg = json.dumps({
         "recipient":{"id":fbid}, 
         "message":{
-            "text":question['question'],
+            "text":question.question,
             "quick_replies":[
                 {
                     "content_type":"text",
-                    "title":question["correct_answer"],
+                    "title":question.correct_answer,
                     "payload":"<POSTBACK_PAYLOAD>",
                 }
             ]
