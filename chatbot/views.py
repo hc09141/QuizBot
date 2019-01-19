@@ -29,8 +29,9 @@ def process_messages(request):
             # Check to make sure the received call is a message call
             # This might be delivery, optin, postback for other events 
             if 'message' in message:
-                print(message['message']['text'])
-                process_message(entry['messaging']['sender']['id'], message['message']['text'])
+                text = message['message']['text']
+                sender_id = message['sender']['id']
+                process_message(sender_id, text)
     return HttpResponse()
 
 def process_message(fb_id, msg):
