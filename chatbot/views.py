@@ -1,5 +1,6 @@
 import json
 import os
+import random
 import requests
 
 from django.http import HttpResponse
@@ -58,8 +59,6 @@ def post_facebook_message(fbid, message):
         }
     }
 
-    print(question)
-
     wrong_answers = question.wrongoption_set.all()
     for wrong_answer in wrong_answers:
         print(wrong_answer)
@@ -68,9 +67,7 @@ def post_facebook_message(fbid, message):
             "title":wrong_answer.text,
             "payload":"<POSTBACK_PAYLOAD>",})
 
-    # note: shuffle these
- 
-    print(response_msg)
+    random.shuffle(response_msg["message"]["quick_replies"])
 
     response_msg = json.dumps(response_msg)
 
