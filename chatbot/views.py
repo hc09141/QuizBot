@@ -5,9 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def index(request):
-    print(request)
-    print(request.GET)
-    print(request.POST)
+    print(request.method)
+    print(request.body)
     if request.GET:
         return HttpResponse(request.GET['hub.challenge'])
     else:
