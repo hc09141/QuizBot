@@ -15,13 +15,23 @@ from django.db import models
 #             repr_string += self.image_id
 #         return repr_string
 
-
 class QuizQuestion(models.Model):
     question = models.TextField()
     answer = models.TextField()
+
+    def __repr__(self):
+        return "Q: " + str(self.question) + " A: " + str(self.answer) + " " + str(self.wrongoption_set.all())
+
+    __str__ = __repr__
 
 
 class WrongOption(models.Model):
     text = models.TextField()
     question = models.ForeignKey(QuizQuestion,
                                  on_delete=models.CASCADE)
+    set_id = models.CharField(max_length=100, default='')
+
+    def __repr__(self):
+        return str(self.text)
+
+    __str__ = __repr__
