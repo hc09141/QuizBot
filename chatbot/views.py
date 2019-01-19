@@ -8,7 +8,10 @@ def index(request):
     print(request)
     print(request.GET)
     print(request.POST)
-    return HttpResponse(request.GET['hub.challenge'])
+    if not request.GET:
+        return HttpResponse(request.GET['hub.challenge'])
+    else:
+        return HttpResponse()
 
 # # Allows FB to validate our app
 # def validate(request):
