@@ -69,6 +69,7 @@ class OpenDBQuiz(object):
             question = QuizQuestion(question=question, answer=answer)
             question.save()
             for wrong_answer in element['incorrect_answers']:
+                print(urllib.parse.unquote(wrong_answer))
                 w = WrongOption(text=urllib.parse.unquote(wrong_answer), question=question)
                 w.save()
             question.save()
