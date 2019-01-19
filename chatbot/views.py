@@ -21,7 +21,7 @@ def post(self, request, *args, **kwargs):
                 process_message(entry['messaging']['sender']['id'], message['message']['text'])
     return HttpResponse()
 
- def process_message(fb_id, msg):
+def process_message(fb_id, msg):
     # greeting = "Hi John! I'm alive!"
     post_facebook_message(fb_id, msg)
 
