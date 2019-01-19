@@ -61,4 +61,4 @@ def post_facebook_message(fbid, message):
 
 def get_quiz_question():
     gQuiz = OpenDBQuiz()
-    return gQuiz.get_questions(num_qs=1)
+    return gQuiz.get_questions(num_qs=1)[0]
