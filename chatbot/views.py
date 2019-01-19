@@ -17,13 +17,13 @@ def post(self, request, *args, **kwargs):
             # Check to make sure the received call is a message call
             # This might be delivery, optin, postback for other events 
             if 'message' in message:
-            	print(message['message']['text'])
+                print(message['message']['text'])
                 process_message(entry['messaging']['sender']['id'], message['message']['text'])
     return HttpResponse()
 
  def process_message(fb_id, msg):
-	# greeting = "Hi John! I'm alive!"
-	post_facebook_message(fb_id, msg)
+    # greeting = "Hi John! I'm alive!"
+    post_facebook_message(fb_id, msg)
 
 def post_facebook_message(fbid, message):         
     post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s' %(FACEBOOK_ACCESS_TOKEN) 
