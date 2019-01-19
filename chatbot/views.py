@@ -40,7 +40,8 @@ def process_message(fb_id, msg):
     # greeting = "Hi John! I'm alive!"
     post_facebook_message(fb_id, msg)
 
-def post_facebook_message(fbid, message):         
+def post_facebook_message(fbid, message):
+    print('Posting FB message')
     post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s' %os.environ["PAGE_ACCESS_TOKEN"] 
     question = get_quiz_question()
     response_msg = {
@@ -63,6 +64,8 @@ def post_facebook_message(fbid, message):
             "content_type":"text",
             "title":wrong_answer.text,
             "payload":"<POSTBACK_PAYLOAD>",})
+
+    # note: shuffle these
  
     print(response_msg)
 
