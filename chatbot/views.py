@@ -3,10 +3,13 @@ import requests
 from django.http import HttpResponse
 
 def index(request):
-    print('Index')
+    print(request)
+    print(request.GET)
+    print(request.POST)
+    return HttpResponse(request.GET['hub.challenge'])
 
 # Allows FB to validate our app
-def get(request):
+def validate(request):
     print('Get')
     return HttpResponse(request.GET['hub.challenge'])
 
