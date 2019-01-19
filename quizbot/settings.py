@@ -25,7 +25,9 @@ SECRET_KEY = '2*d-$-8!&kbmubdqm-o@p7(da(^=t@00)j$h)xx%a1#jo-y3=t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'quiet-temple-14701.herokuapp.com'
+]
 
 
 # Application definition
