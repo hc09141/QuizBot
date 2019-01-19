@@ -2,12 +2,17 @@ import requests
 
 from django.http import HttpResponse
 
+def index(request):
+    print('Index')
+
 # Allows FB to validate our app
 def get(request):
+    print('Get')
     return HttpResponse(request.GET['hub.challenge'])
 
 # For receiving user messages
 def post(self, request, *args, **kwargs):
+    print('Post')
     # Converts the text payload into a python dictionary
     incoming_message = json.loads(self.request.body.decode('utf-8'))
     # Facebook recommends going through every entry since they might send
