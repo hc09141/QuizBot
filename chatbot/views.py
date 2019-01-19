@@ -4,6 +4,7 @@ import requests
 
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from OpenDBQuiz import OpenDBQuiz
 
 @csrf_exempt
 def index(request):
@@ -29,9 +30,10 @@ def process_messages(request):
             # Check to make sure the received call is a message call
             # This might be delivery, optin, postback for other events 
             if 'message' in message:
-                text = message['message']['text']
-                sender_id = message['sender']['id']
-                process_message(sender_id, text)
+                if 'text' in message['message']:
+                    text = message['message']['text']
+                    sender_id = message['sender']['id']
+                    process_message(sender_id, text)
     return HttpResponse()
 
 def process_message(fb_id, msg):
@@ -40,5 +42,23 @@ def process_message(fb_id, msg):
 
 def post_facebook_message(fbid, message):         
     post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s' %os.environ["PAGE_ACCESS_TOKEN"] 
-    response_msg = json.dumps({"recipient":{"id":fbid}, "message":{"text":message}})
+    question = get_quiz_question()
+    print(question)
+    response_msg = json.dumps({
+        "recipient":{"id":fbid}, 
+        "message":{
+            "text":question['question'],
+            "quick_replies":[
+                {
+                    "content_type":"text",
+                    "title":question["correct_answer"],
+                    "payload":"<POSTBACK_PAYLOAD>",
+                }
+            ]
+        }
+    })
     status = requests.post(post_message_url, headers={"Content-Type": "application/json"},data=response_msg)
+
+def get_quiz_question():
+    gQuiz = OpenDBQuiz()
+    return gQuiz.get_questions(num_qs=1)

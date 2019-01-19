@@ -39,7 +39,7 @@ class OpenDBQuiz(object):
         token = authreq.json()['token']
         self.token = str(token)
         self.quiz_list = []
-        print(token)
+        # print(token)
 
     def get_questions(self, num_qs=10, category=None, difficulty=None):
         category_list = []
@@ -54,10 +54,10 @@ class OpenDBQuiz(object):
         category_list.append('&encode=url3986')
         url = 'https://opentdb.com/api.php?' + ''.join(category_list)
         qreq = requests.request('GET', url)
-        print(qreq)
+        # print(qreq)
         code = qreq.json()['response_code']
-        print(url)
-        print(code)
+        # print(url)
+        # print(code)
         quiz_object = self._quiz_question_objects(qreq.json())
         return quiz_object
 
@@ -83,4 +83,4 @@ class OpenDBQuiz(object):
 
 if __name__ == '__main__':
     gQuiz = OpenDBQuiz()
-    print(gQuiz.get_questions(category=OpenDBCategories.entertaiment_comics))
+    # print(gQuiz.get_questions(category=OpenDBCategories.entertaiment_comics))
