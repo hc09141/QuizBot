@@ -51,7 +51,7 @@ def post_facebook_message(fbid, message):
             "quick_replies":[
                 {
                     "content_type":"text",
-                    "title":question.correct_answer,
+                    "title":question.answer,
                     "payload":"<POSTBACK_PAYLOAD>",
                 }
             ]
