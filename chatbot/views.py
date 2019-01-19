@@ -22,8 +22,8 @@ def post(self, request, *args, **kwargs):
     return HttpResponse()
 
  def process_message(fb_id, msg):
-	 # greeting = "Hi John! I'm alive!"
-	 post_facebook_message(fb_id, msg)
+	# greeting = "Hi John! I'm alive!"
+	post_facebook_message(fb_id, msg)
 
 def post_facebook_message(fbid, message):         
     post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s' %(FACEBOOK_ACCESS_TOKEN) 
