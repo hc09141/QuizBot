@@ -58,7 +58,7 @@ def post_facebook_message(fbid, message):
     }
 
     quick_replies = response_msg["message"]["quick_replies"]
-    wrong_answers = question.wrong_answers_set.all()
+    wrong_answers = question.wronganswers_set.all()
     for wrong_answer in wrong_answers:
         quick_replies.append({
             "content_type":"text",
