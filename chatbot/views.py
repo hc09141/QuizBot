@@ -17,7 +17,8 @@ def post(self, request, *args, **kwargs):
             # Check to make sure the received call is a message call
             # This might be delivery, optin, postback for other events 
             if 'message' in message:
-                process_message(entry['messaging']['sender']['id'])
+            	print(message['message']['text'])
+                process_message(entry['messaging']['sender']['id'], message['message']['text'])
     return HttpResponse()
 
  def process_message(fb_id, msg):
