@@ -16,7 +16,7 @@ def validate(request):
     return HttpResponse(request.GET['hub.challenge'])
 
 # For receiving user messages
-def process_messages(self, request, *args, **kwargs):
+def process_messages(request):
     print('Processing messages')
     # Converts the text payload into a python dictionary
     incoming_message = json.loads(self.request.body.decode('utf-8'))
