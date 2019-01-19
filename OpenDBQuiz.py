@@ -1,6 +1,6 @@
 import requests
 import urllib
-from QuizQuestion import *
+from chatbot.models import *
 from enum import Enum
 
 
@@ -38,6 +38,7 @@ class OpenDBQuiz(object):
         authreq = requests.request('GET', session_tokens_url)
         token = authreq.json()['token']
         self.token = str(token)
+        self.quiz_list = []
         print(token)
 
     def get_questions(self, num_qs=10, category=None, difficulty=None):
@@ -63,13 +64,21 @@ class OpenDBQuiz(object):
     def _quiz_question_objects(self, json):
         quiz_list = []
         for element in json['results']:
-            question = strwImage(urllib.parse.unquote(element['question']))
-            answer = strwImage(urllib.parse.unquote(element['correct_answer']))
-            wrong_answers = []
+            question = urllib.parse.unquote(element['question'])
+            answer = urllib.parse.unquote(element['correct_answer'])
+            question = QuizQuestion(question=question, answer=answer)
+            question.save()
             for wrong_answer in element['incorrect_answers']:
-                wrong_answers.append(strwImage(urllib.parse.unquote(wrong_answer)))
-            quiz_list.append(QuizQuestion(question, answer, wrong_answers))
+                w = WrongOption(text=urllib.parse.unquote(wrong_answer), question=question)
+                w.save()
+            question.save()
+            quiz_list.append(question)
+        self.quiz_list.extend(quiz_list)
         return quiz_list
+
+    def __del__(self):
+        for question in self.quiz_list:
+            question.delete()
 
 
 if __name__ == '__main__':
