@@ -77,9 +77,9 @@ class OpenDBQuiz(object):
         self.quiz_list.extend(quiz_list)
         return quiz_list
 
-    def __del__(self):
-        for question in self.quiz_list:
-            question.delete()
+    # def __del__(self):
+    #     for question in self.quiz_list:
+    #         question.delete()
 
 
 if __name__ == '__main__':
