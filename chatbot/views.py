@@ -21,6 +21,7 @@ def process_messages(request):
     print('Processing messages')
     # Converts the text payload into a python dictionary
     incoming_message = json.loads(request.body.decode('utf-8'))
+    print(incoming_message)
     # Facebook recommends going through every entry since they might send
     # multiple messages in a single call during high load
     for entry in incoming_message['entry']:
