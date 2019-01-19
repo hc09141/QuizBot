@@ -43,7 +43,6 @@ def process_message(fb_id, msg):
 def post_facebook_message(fbid, message):         
     post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s' %os.environ["PAGE_ACCESS_TOKEN"] 
     question = get_quiz_question()
-    print(question)
     response_msg = json.dumps({
         "recipient":{"id":fbid}, 
         "message":{
@@ -57,6 +56,15 @@ def post_facebook_message(fbid, message):
             ]
         }
     })
+
+    quick_replies = response_msg["message"]["quick_replies"]
+    wrong_answers = question.wrong_answers_set.all()
+    for wrong_answer in wrong_answers:
+        quick_replies.append({
+            "content_type":"text",
+            "title":wrong_answer.text,
+            "payload":"<POSTBACK_PAYLOAD>",})
+
     status = requests.post(post_message_url, headers={"Content-Type": "application/json"},data=response_msg)
 
 def get_quiz_question():
