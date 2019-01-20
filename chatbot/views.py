@@ -78,7 +78,7 @@ def process_new_user(sender_id):
     user_profile = UserProfile(fb_id=sender_id)
     user_profile.save()
     # do some error handling here to deal w user profile id existing
-    user = User(id=User.objects.count(), user_profile=user_profile)
+    user = User(user_id=User.objects.count(), user_profile=user_profile)
     user.save()
 
 def post_facebook_message(fbid, message):
