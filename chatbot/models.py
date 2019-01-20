@@ -21,6 +21,7 @@ class QuizQuestion(models.Model):
     question = models.TextField()
     answer = models.TextField()
     set_id = models.CharField(max_length=100, default='')
+    fb_id = models.CharField(max_length=50, default='0000')
 
     def __repr__(self):
         return "Q: " + str(self.question) + " A: " + str(self.answer) + " " + str(self.wrongoption_set.all())
