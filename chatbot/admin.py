@@ -1,4 +1,5 @@
 from django.contrib import admin
+from .models import UserProfile, Message
 
 class UserProfileAdmin(admin.ModelAdmin):
     pass
