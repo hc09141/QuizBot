@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from OpenDBQuiz import OpenDBQuiz, OpenDBCategories
 # from rest_framework import viewsets
-from .models import QuizQuestion, UserProfile, QuestionMessage, Message
+from .models import QuizQuestion, UserProfile, QuestionMessage, Message, QuestionResponseMessage
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
@@ -113,6 +113,10 @@ def post_trivia_question(fbid):
     post_facebook_message(fbid, response_msg)
 
 def post_trivia_answer(fbid, user_answer, question_message):
+    # saves user message (so that we register that they responded to prev question)
+    message = QuestionResponseMessage(question_message=question_message, text=user_answer)
+    message.save()
+
     response_msg = {
         "messaging_type": "<MESSAGING_TYPE>",
         "recipient": {"id": fbid},
