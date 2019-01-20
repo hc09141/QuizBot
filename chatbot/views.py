@@ -124,7 +124,7 @@ def post_trivia_question(fbid):
 def post_trivia_answer(fbid, user_answer, question_message):
     print("Post trivia answer")
     # saves user message (so that we register that they responded to prev question)
-    message = QuestionResponseMessage(question_message=question_message, text=user_answer)
+    message = QuestionResponseMessage(question_message=question_message, text=user_answer, user_profile=question_message.user_profile)
     message.save()
 
     response_msg = {
