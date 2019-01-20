@@ -60,6 +60,8 @@ def process_messages(request):
                     text = message['message']['text']
                     sender_id = message['sender']['id']
                     process_message(sender_id, text)
+                if 'quick_reply' in message['message']:
+                    process_message(sender_id, message['message']['quick_reply']['text'])
             elif 'postback' in message:
                 if 'title' in message['postback'] and message['postback']['title'] == 'Get Started':
                     sender_id = message['sender']['id']
@@ -73,6 +75,7 @@ def process_message(fb_id, msg):
         last_message = user_profile.message_set.last()
         if last_message.__class__.__name__ == 'QuestionMessage':
             post_trivia_answer(fb_id, msg, last_message)
+            return
     post_trivia_question(fb_id)
 
 def process_new_user(sender_id):
@@ -113,6 +116,7 @@ def post_trivia_question(fbid):
     post_facebook_message(fbid, response_msg)
 
 def post_trivia_answer(fbid, user_answer, question_message):
+    print("Post trivia answer")
     # saves user message (so that we register that they responded to prev question)
     message = QuestionResponseMessage(question_message=question_message, text=user_answer)
     message.save()
