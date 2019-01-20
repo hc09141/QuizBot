@@ -72,6 +72,7 @@ def process_messages(request):
 
 def process_message(fb_id, msg):
     user_profile = UserProfile.objects.get(fb_id=fb_id)
+    print(user_profile)
     messages = user_profile.message_set
     print(messages)
     if user_profile.message_set:
