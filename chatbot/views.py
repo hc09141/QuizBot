@@ -73,7 +73,7 @@ def process_messages(request):
 def process_message(fb_id, msg):
     user_profile = UserProfile.objects.get(fb_id=fb_id)
     messages = user_profile.message_set
-    if user_profile.message_set.exists():
+    if user_profile.message_set.count():
         last_message = user_profile.message_set.last()
         if last_message.__class__.__name__ == 'QuestionMessage':
             post_trivia_answer(fb_id, msg, last_message)
@@ -86,6 +86,7 @@ def process_new_user(sender_id):
     user_profile.save()
 
 def post_trivia_question(fbid):
+    print("Post trivia question")
     question = get_quiz_question()
     response_msg = {
         "recipient":{"id":fbid},
