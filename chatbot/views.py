@@ -68,20 +68,19 @@ def process_messages(request):
     return HttpResponse()
 
 def process_message(fb_id, msg):
-    # greeting = "Hi John! I'm alive!"
-    # post_facebook_message(fb_id, msg)
-    post_trivia_question(fb_id, msg)
+    user = UserProfile.objects.get(fb_id=fbid).user
+    if user.message_set:
+        last_message = user.message_set.last()
+        if last_message.__class__.__name__ == 'QuestionMessage':
+            post_trivia_answer(fb_id, msg, last_message)
+    post_trivia_question(fb_id)
 
 def process_new_user(sender_id):
-    print('Processing new user')
-    # user = User(user_id=User.objects.count(), user_profile=user_profile)
-    # 
-    # user.save()
     user = User.objects.create_user('john', 'lennon@thebeatles.com')
     user_profile = UserProfile(fb_id=sender_id, user_id=user.id)
     user_profile.save()
 
-def post_trivia_question(fbid, message):
+def post_trivia_question(fbid):
     question = get_quiz_question()
     response_msg = {
         "recipient":{"id":fbid},
@@ -112,6 +111,23 @@ def post_trivia_question(fbid, message):
     message.save()
 
     post_facebook_message(fbid, response_msg)
+
+def post_trivia_answer(fbid, user_answer, question_message):
+    response_msg = {
+        "messaging_type": "<MESSAGING_TYPE>",
+        "recipient": {"id": fbid},
+        "message": {
+            "text": "<RESPONSE GOING HERE>"
+        }
+    }
+    correct_answer = question_message.question.correct_answer
+    if correct_answer == user_answer:
+        response_msg['message']['text'] = 'Correct!'
+    else:
+        response_msg['message']['text'] = 'Wrong! The correct answer was ' + correct_answer
+
+    post_facebook_message(fbid, response_msg)
+
 
 def post_facebook_message(fbid, response):
     print('Posting FB message')

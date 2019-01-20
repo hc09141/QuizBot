@@ -47,3 +47,7 @@ class Message(models.Model):
 
 class QuestionMessage(Message):
     question = models.OneToOneField(QuizQuestion, on_delete=models.CASCADE, primary_key=True)
+
+class QuestionResponse(Message):
+    text = models.TextField()
+    question_message = models.OneToOneField(QuestionMessage, on_delete=models.CASCADE)
