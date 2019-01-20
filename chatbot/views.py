@@ -158,9 +158,22 @@ def post_facebook_message(fbid, response):
     status = requests.post(post_message_url, headers={"Content-Type": "application/json"},data=response_msg)
     print(status)
 
-def process_switching_question_set(fbid):
+def process_switch_question_set(fbid):
     user_profile = UserProfile.objects.get(fb_id=fbid)
-    # should check here is we have any user questions available
+    
+    response_msg = {
+        "messaging_type": "RESPONSE",
+        "recipient": {"id": fbid},
+        "message": {
+            "text": "text"
+        }
+    }
+
+    if user_profile.use_default_question and not QuizQuestion.objects.count():
+        response_msg["message"]["text"] = "You don't have any quiz questions! Download our iOS app to make your own questions"
+        post_facebook_message(fbid, response_msg)
+        return
+
     user_profile.use_default_question = not user_profile.use_default_question
     user_profile.save()
 
@@ -168,13 +181,7 @@ def process_switching_question_set(fbid):
     if not user_profile.use_default_question:
         text = "You will now receive your custom made questions"
 
-    response_msg = {
-        "messaging_type": "RESPONSE",
-        "recipient": {"id": fbid},
-        "message": {
-            "text": text
-        }
-    }
+    response_msg["message"]["text"] = text
 
     post_facebook_message(fbid, response_msg)
 
@@ -184,7 +191,7 @@ def get_quiz_question(fbid):
         gQuiz = OpenDBQuiz()
         return gQuiz.get_questions(num_qs=1)[0]
 
-    question_ids = QuizQuestion.objects.values_list('id', flat=True)
+    question_ids = QuizQuestion.objects.filter(user_profile=user_profile).values_list('id', flat=True)
     id = random.choice(question_ids)
     question = QuizQuestion.objects.get(id=id)
     return question
