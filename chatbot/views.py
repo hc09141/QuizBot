@@ -134,7 +134,7 @@ def post_trivia_answer(fbid, user_answer, question_message):
             "text": "<RESPONSE GOING HERE>"
         }
     }
-    correct_answer = question_message.question.correct_answer
+    correct_answer = question_message.question.answer
     if correct_answer == user_answer:
         response_msg['message']['text'] = 'Correct!'
     else:
