@@ -43,6 +43,7 @@ class WrongOption(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     fb_id = models.CharField(unique=True, max_length=50)
+    use_default_question = models.BooleanField(default=True)
 
 class Message(models.Model):
     objects = InheritanceManager()

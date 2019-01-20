@@ -15,8 +15,6 @@ def index(request):
     if request.method == 'GET':
         return validate(request)
     return process_messages(request)
-    # return HttpResponse(request.GET['hub.challenge'])
-
 
 @csrf_exempt
 def create(request):
@@ -70,8 +68,9 @@ def process_messages(request):
                         process_new_user(sender_id)
                     elif message['postback']['title'] == 'Help':
                         print('Help')
-                    elif message['postback']['title'] == 'Set frequency':
-                        print('Set frequency')
+                    elif message['postback']['title'] == 'Switch questions':
+                        sender_id = message['sender']['id']
+                        process_switch_question_set(sender_id)
 
     return HttpResponse()
 
@@ -95,30 +94,31 @@ def process_new_user(sender_id):
 
 def post_trivia_question(fbid):
     print("Post trivia question")
-    question = get_quiz_question()
+    question = get_quiz_question(fbid)
+    wrong_answers = question.wrongoption_set.all()
+  
     response_msg = {
         "recipient":{"id":fbid},
         "message":{
             "text":question.question,
-            "quick_replies":[
-                {
+        }
+    }
+
+    if wrong_answers:
+        response_msg["quick_replies"] = [{
                     "content_type":"text",
                     "title":question.answer,
                     "payload":"<POSTBACK_PAYLOAD>",
                 }
             ]
-        }
-    }
+        for wrong_answer in wrong_answers:
+            print(wrong_answer)
+            response_msg["message"]["quick_replies"].append({
+                "content_type":"text",
+                "title":wrong_answer.text,
+                "payload":"<POSTBACK_PAYLOAD>",})
 
-    wrong_answers = question.wrongoption_set.all()
-    for wrong_answer in wrong_answers:
-        print(wrong_answer)
-        response_msg["message"]["quick_replies"].append({
-            "content_type":"text",
-            "title":wrong_answer.text,
-            "payload":"<POSTBACK_PAYLOAD>",})
-
-    random.shuffle(response_msg["message"]["quick_replies"])
+        random.shuffle(response_msg["message"]["quick_replies"])
 
     user_profile = UserProfile.objects.get(fb_id=fbid)
     message = QuestionMessage(question=question, user_profile=user_profile)
@@ -158,6 +158,32 @@ def post_facebook_message(fbid, response):
     status = requests.post(post_message_url, headers={"Content-Type": "application/json"},data=response_msg)
     print(status)
 
-def get_quiz_question():
-    gQuiz = OpenDBQuiz()
-    return gQuiz.get_questions(num_qs=1)[0]
+def process_switching_question_set(fbid):
+    user_profile = UserProfile.objects.get(fb_id=fbid)
+    user_profile.use_default_question = not user_profile.use_default_question
+    user_profile.save()
+
+    text = "You will now receive OpenDBQuiz questions"
+    if not user_profile.use_default_question:
+        text = "You will now receive your custom made questions"
+
+    response_msg = {
+        "messaging_type": "RESPONSE",
+        "recipient": {"id": fbid},
+        "message": {
+            "text": text
+        }
+    }
+
+    post_facebook_message(fbid, response_msg)
+
+def get_quiz_question(fbid):
+    user_profile = UserProfile.objects.get(fb_id=fbid)
+    if user_profile.use_default_question:
+        gQuiz = OpenDBQuiz()
+        return gQuiz.get_questions(num_qs=1)[0]
+
+    question_ids = QuizQuestion.objects.values_list('id', flat=True)
+    id = random.choice(question_ids)
+    question = QuizQuestion.objects.get(id=id)
+    return question
