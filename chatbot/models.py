@@ -40,7 +40,7 @@ class WrongOption(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    fb_id = models.IntegerField(unique=True)
+    fb_id = models.CharField(unique=True, max_length=50)
 
 class Message(models.Model):
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
