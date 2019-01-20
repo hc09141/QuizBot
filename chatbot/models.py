@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from model_utils.managers import InheritanceManager
 
 # Create your models here.
 
@@ -44,6 +45,7 @@ class UserProfile(models.Model):
     fb_id = models.CharField(unique=True, max_length=50)
 
 class Message(models.Model):
+    objects = InheritanceManager()
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
 
 class QuestionMessage(Message):
