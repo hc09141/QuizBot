@@ -64,9 +64,14 @@ def process_messages(request):
                     sender_id = message['sender']['id']
                     process_message(sender_id, text)
             elif 'postback' in message:
-                if 'title' in message['postback'] and message['postback']['title'] == 'Get Started':
-                    sender_id = message['sender']['id']
-                    process_new_user(sender_id)
+                if 'title' in message['postback']:
+                    if message['postback']['title'] == 'Get Started':
+                        sender_id = message['sender']['id']
+                        process_new_user(sender_id)
+                    elif message['postback']['title'] == 'Help':
+                        print('Help')
+                    elif message['postback']['title'] == 'Set frequency':
+                        print('Set frequency')
 
     return HttpResponse()
 
@@ -140,6 +145,7 @@ def post_trivia_answer(fbid, user_answer, question_message):
     else:
         response_msg['message']['text'] = 'Wrong! The correct answer was ' + correct_answer
 
+    print(response_msg)
     post_facebook_message(fbid, response_msg)
 
 
@@ -150,6 +156,7 @@ def post_facebook_message(fbid, response):
     response_msg = json.dumps(response)
 
     status = requests.post(post_message_url, headers={"Content-Type": "application/json"},data=response_msg)
+    print(status)
 
 def get_quiz_question():
     gQuiz = OpenDBQuiz()
