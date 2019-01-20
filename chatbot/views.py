@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from OpenDBQuiz import OpenDBQuiz, OpenDBCategories
 # from rest_framework import viewsets
-from .models import QuizQuestion
+from .models import QuizQuestion, UserProfile, QuestionMessage, Message
 from django.views.decorators.csrf import csrf_exempt
 import json
 import os
