@@ -68,9 +68,9 @@ def process_messages(request):
     return HttpResponse()
 
 def process_message(fb_id, msg):
-    user = UserProfile.objects.get(fb_id=fb_id).user
-    if user.message_set:
-        last_message = user.message_set.last()
+    user_profile = UserProfile.objects.get(fb_id=fb_id)
+    if user_profile.message_set:
+        last_message = user_profile.message_set.last()
         if last_message.__class__.__name__ == 'QuestionMessage':
             post_trivia_answer(fb_id, msg, last_message)
     post_trivia_question(fb_id)
