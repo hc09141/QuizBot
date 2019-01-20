@@ -79,7 +79,13 @@ def process_new_user(sender_id):
     user_profile = UserProfile(fb_id=sender_id)
     user_profile.save()
     # do some error handling here to deal w user profile id existing
-    user = User(user_id=User.objects.count(), user_profile=user_profile)
+
+    # user = User(user_id=User.objects.count(), user_profile=user_profile)
+    # 
+    # user.save()
+    user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+    user.user_profile = user_profile
+    user.set_unusable_password()
     user.save()
 
 def post_trivia_question(fbid, message):
