@@ -60,8 +60,6 @@ def process_messages(request):
                     text = message['message']['text']
                     sender_id = message['sender']['id']
                     process_message(sender_id, text)
-                # if 'quick_reply' in message['message']:
-                #     process_message(sender_id, message['message']['quick_reply']['text'])
             elif 'postback' in message:
                 if 'title' in message['postback'] and message['postback']['title'] == 'Get Started':
                     sender_id = message['sender']['id']
@@ -71,6 +69,8 @@ def process_messages(request):
 
 def process_message(fb_id, msg):
     user_profile = UserProfile.objects.get(fb_id=fb_id)
+    messages = user_profile.message_set
+    print(messages)
     if user_profile.message_set:
         last_message = user_profile.message_set.last()
         if last_message.__class__.__name__ == 'QuestionMessage':
