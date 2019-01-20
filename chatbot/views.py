@@ -133,7 +133,7 @@ def post_trivia_answer(fbid, user_answer, question_message):
     message.save()
 
     response_msg = {
-        "messaging_type": "<MESSAGING_TYPE>",
+        "messaging_type": "RESPONSE",
         "recipient": {"id": fbid},
         "message": {
             "text": "<RESPONSE GOING HERE>"
