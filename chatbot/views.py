@@ -68,7 +68,7 @@ def process_messages(request):
     return HttpResponse()
 
 def process_message(fb_id, msg):
-    user = UserProfile.objects.get(fb_id=fbid).user
+    user = UserProfile.objects.get(fb_id=fb_id).user
     if user.message_set:
         last_message = user.message_set.last()
         if last_message.__class__.__name__ == 'QuestionMessage':
