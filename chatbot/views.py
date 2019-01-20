@@ -65,6 +65,7 @@ def process_messages(request):
             elif 'postback' in message:
                 if 'title' in message['postback'] and message['postback']['title'] == 'Get Started':
                     sender_id = message['sender']['id']
+                    process_new_user(sender_id)
 
     return HttpResponse()
 
