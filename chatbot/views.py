@@ -147,6 +147,7 @@ def post_trivia_answer(fbid, user_answer, question_message):
 
     print(response_msg)
     post_facebook_message(fbid, response_msg)
+    post_trivia_question(fbid)
 
 
 def post_facebook_message(fbid, response):
