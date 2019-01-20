@@ -75,12 +75,8 @@ def process_message(fb_id, msg):
     messages = user_profile.message_set
     print(user_profile.message_set.count())
     if user_profile.message_set.count():
-        print('User has previous messsages')
-
         last_message = user_profile.message_set.last()
-        print(last_message)
-
-        print(user_profile.message_set.get_subclass(pk=last_message.pk))
+        last_message = user_profile.message_set.get_subclass(pk=last_message.pk)
 
         if last_message.__class__.__name__ == 'QuestionMessage':
             post_trivia_answer(fb_id, msg, last_message)
