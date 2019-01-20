@@ -116,7 +116,7 @@ def post_trivia_question(fbid, message):
 
     post_facebook_message(fbid, response_msg)
 
-def post_facebook_message(response):
+def post_facebook_message(fbid, response):
     print('Posting FB message')
     post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s' %os.environ["PAGE_ACCESS_TOKEN"]
 
