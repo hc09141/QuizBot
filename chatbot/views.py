@@ -105,7 +105,7 @@ def post_trivia_question(fbid):
     }
 
     if wrong_answers:
-        response_msg["quick_replies"] = [{
+        response_msg["message"]["quick_replies"] = [{
                     "content_type":"text",
                     "title":question.answer,
                     "payload":"<POSTBACK_PAYLOAD>",
@@ -160,6 +160,7 @@ def post_facebook_message(fbid, response):
 
 def process_switching_question_set(fbid):
     user_profile = UserProfile.objects.get(fb_id=fbid)
+    # should check here is we have any user questions available
     user_profile.use_default_question = not user_profile.use_default_question
     user_profile.save()
 
