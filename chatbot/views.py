@@ -110,6 +110,13 @@ def post_facebook_message(fbid, message):
 
     response_msg = json.dumps(response_msg)
 
+    user_profile = UserProfile.objects.get(fb_id=fbid)
+    message = QuestionMessage(question=question, user_profile=user_profile)
+    message.save()
+
+    print(user_profile)
+    print(message)
+
     status = requests.post(post_message_url, headers={"Content-Type": "application/json"},data=response_msg)
 
 def get_quiz_question():
