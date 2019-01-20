@@ -26,12 +26,15 @@ def create(request):
     else:
         response = HttpResponse('Invalid JSON')
         response.status_code = 400
+    if 'user_id' in result:
+        user_id = result['user_id']
     for info in result['quiz_data']:
         quiz_question = info['question']
         quiz_answer = info['answer']
         quiz = QuizQuestion(question=quiz_question,
                             answer=quiz_answer,
-                            set_id=set_id)
+                            set_id=set_id,
+                            user_id=user_id)
         quiz.save()
         print("Created: ", quiz)
     response = HttpResponse('Successfuly saved with set_id ' + set_id)
