@@ -107,6 +107,10 @@ def post_trivia_question(fbid, message):
 
     random.shuffle(response_msg["message"]["quick_replies"])
 
+    user_profile = UserProfile.objects.get(fb_id=fbid)
+    message = QuestionMessage(question=question, user_profile=user_profile)
+    message.save()
+
     post_facebook_message(fbid, response_msg)
 
 def post_facebook_message(fbid, response):
@@ -114,13 +118,6 @@ def post_facebook_message(fbid, response):
     post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s' %os.environ["PAGE_ACCESS_TOKEN"]
 
     response_msg = json.dumps(response)
-
-    user_profile = UserProfile.objects.get(fb_id=fbid)
-    message = QuestionMessage(question=question, user_profile=user_profile)
-    message.save()
-
-    print(user_profile)
-    print(message)
 
     status = requests.post(post_message_url, headers={"Content-Type": "application/json"},data=response_msg)
 
