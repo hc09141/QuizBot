@@ -86,6 +86,7 @@ def process_new_user(sender_id):
     user = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
     user.user_profile = user_profile
     user.set_unusable_password()
+    print(user)
     user.save()
 
 def post_trivia_question(fbid, message):
