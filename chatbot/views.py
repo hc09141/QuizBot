@@ -85,7 +85,7 @@ def process_message(fb_id, msg):
     post_trivia_question(fb_id)
 
 def process_new_user(sender_id):
-    user = User.objects.create_user('john', 'lennon@thebeatles.com')
+    user = User.objects.create_user(sender_id)
     user_profile = UserProfile(fb_id=sender_id, user_id=user.id)
     user_profile.save()
 
