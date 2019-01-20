@@ -1,16 +1,14 @@
-from django.http import HttpResponse
-from OpenDBQuiz import OpenDBQuiz, OpenDBCategories
-# from rest_framework import viewsets
-from .models import QuizQuestion, UserProfile, QuestionMessage, Message
-from django.views.decorators.csrf import csrf_exempt
 import json
 import os
 import random
 import requests
 
+from django.contrib.auth.models import User
 from django.http import HttpResponse
+from OpenDBQuiz import OpenDBQuiz, OpenDBCategories
+# from rest_framework import viewsets
+from .models import QuizQuestion, UserProfile, QuestionMessage, Message
 from django.views.decorators.csrf import csrf_exempt
-from OpenDBQuiz import OpenDBQuiz
 
 @csrf_exempt
 def index(request):
