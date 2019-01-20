@@ -60,8 +60,8 @@ def process_messages(request):
                     text = message['message']['text']
                     sender_id = message['sender']['id']
                     process_message(sender_id, text)
-                if 'quick_reply' in message['message']:
-                    process_message(sender_id, message['message']['quick_reply']['text'])
+                # if 'quick_reply' in message['message']:
+                #     process_message(sender_id, message['message']['quick_reply']['text'])
             elif 'postback' in message:
                 if 'title' in message['postback'] and message['postback']['title'] == 'Get Started':
                     sender_id = message['sender']['id']
