@@ -34,7 +34,7 @@ def create(request):
         quiz = QuizQuestion(question=quiz_question,
                             answer=quiz_answer,
                             set_id=set_id,
-                            user_id=user_id)
+                            fb_id=user_id)
         quiz.save()
         print("Created: ", quiz)
     response = HttpResponse('Successfuly saved with set_id ' + set_id)
