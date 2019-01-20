@@ -71,7 +71,8 @@ def process_messages(request):
 
 def process_message(fb_id, msg):
     # greeting = "Hi John! I'm alive!"
-    post_facebook_message(fb_id, msg)
+    # post_facebook_message(fb_id, msg)
+    post_trivia_question(fb_id, msg)
 
 def process_new_user(sender_id):
     print('Processing new user')
@@ -81,12 +82,10 @@ def process_new_user(sender_id):
     user = User(user_id=User.objects.count(), user_profile=user_profile)
     user.save()
 
-def post_facebook_message(fbid, message):
-    print('Posting FB message')
-    post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s' %os.environ["PAGE_ACCESS_TOKEN"] 
+def post_trivia_question(fbid, message):
     question = get_quiz_question()
     response_msg = {
-        "recipient":{"id":fbid}, 
+        "recipient":{"id":fbid},
         "message":{
             "text":question.question,
             "quick_replies":[
@@ -109,7 +108,13 @@ def post_facebook_message(fbid, message):
 
     random.shuffle(response_msg["message"]["quick_replies"])
 
-    response_msg = json.dumps(response_msg)
+    post_facebook_message(fbid, response_msg)
+
+def post_facebook_message(response):
+    print('Posting FB message')
+    post_message_url = 'https://graph.facebook.com/v2.6/me/messages?access_token=%s' %os.environ["PAGE_ACCESS_TOKEN"]
+
+    response_msg = json.dumps(response)
 
     user_profile = UserProfile.objects.get(fb_id=fbid)
     message = QuestionMessage(question=question, user_profile=user_profile)
